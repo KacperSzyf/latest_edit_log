@@ -38,7 +38,34 @@ in `models.py` found in `arches -> app -> models` add the following class just u
         db_table = "latest_resource_edit"
 ```
 
-### 7. `resource.py`
+### 7. `tiles.py`
+
+in `tiles.py` found in `arches -> app -> models` add the following `if` ad the end og the `save_edit` function
+
+```
+  if LatestResourceEdit.objects.filter(resourceinstanceid=self.resourceinstanceid, edittype = 'create').exists():
+                if LatestResourceEdit.objects.filter(resourceinstanceid = self.resourceinstanceid).exclude(edittype = 'create').exists():
+                    LatestResourceEdit.objects.filter(resourceinstanceid = self.resourceinstanceid).exclude(edittype = 'create').delete()
+                #Delete old verions and add latest edit
+                latest_edit = LatestResourceEdit()
+                latest_edit.resourceinstanceid = self.resourceinstanceid
+                latest_edit.timestamp = timestamp
+                latest_edit.user_username = getattr(user, "username", "")
+                latest_edit.edittype = edit_type
+                latest_edit.resourcedisplayname =  Resource.objects.get(resourceinstanceid=self.resourceinstanceid).displayname
+                latest_edit.save()
+
+        else:
+            latest_edit = LatestResourceEdit()
+            latest_edit.resourceinstanceid = self.resourceinstanceid
+            latest_edit.timestamp = timestamp
+            latest_edit.edittype = edit_type
+            latest_edit.user_username = getattr(user,"username", "")
+            latest_edit.resourcedisplayname =  Resource.objects.get(resourceinstanceid=self.resourceinstanceid).displayname
+            latest_edit.save()
+```
+
+### 8. `resource.py`
 
 in `resource.py` found in `arches -> app -> models` add the folllowing `if` at the end of the `save_edit` function
 
@@ -53,7 +80,7 @@ if LatestResourceEdit.objects.filter(resourceinstanceid=self.resourceinstanceid)
     latest_edit.save()
 ```
 
-### 8. commands
+### 9. commands
 
 Finally run the following commands
 
