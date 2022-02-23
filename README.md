@@ -89,3 +89,6 @@ python manage.py makemigrations
 python manage.py migrate
 python manage populate_latest_resource_edit_table
 ```
+### add 
+from .views.latestresource import LatestEditLogView
+    url(r"^resource/latest$", LatestEditLogView.as_view(), name="latest_edits"),
