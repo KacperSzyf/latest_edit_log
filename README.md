@@ -19,8 +19,9 @@ copy `populate_latest_resource_edit_table.py` into `managment -> commands` folde
 ### 5.  `urls.py`
 
 add the following to `urls.py`:
-    -  under the imports add  `.views.ciimchanges import ChangesView`
-    - in urlpatterns add `url(r"^resource/changes", ChangesView.as_view(), name="ChangesView"`
+    - under the imports add  `from .views.ciimchanges import ChangesView` and `from .views.latestresource import LatestEditLogView`
+    - in urlpatterns add `url(r"^resource/changes", ChangesView.as_view(), name="ChangesView"` and `url(r"^resource/latest$", LatestEditLogView.as_view(), name="latest_edits"),`
+    
 
 ### 6. `models.py`
 
